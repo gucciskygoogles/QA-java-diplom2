@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="32c95c06-0783-418e-ad3e-369080b86ddc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/api/client/OrderClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/api/client/UserClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/parktikum/DataCreator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/parktikum/Finals.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/parktikum/Order.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/parktikum/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ChangeUserDataTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/OrderCreateAndGetTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/UserCreateTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/UserLoginTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2jK9FGqgATWa7a7Cm4G634u6K2l" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.ChangeUserData.changeUserData.executor": "Run",
+    "JUnit.ChangeUserData.changeUserDataWithoutAuthorisation.executor": "Run",
+    "JUnit.ChangeUserData.changeUserDataWithoutAuthorization.executor": "Run",
+    "JUnit.ChangeUserData.changeUserDataWithoutAuthorizationTest.executor": "Run",
+    "JUnit.ChangeUserData.executor": "Run",
+    "JUnit.OrderClientTest (1).executor": "Run",
+    "JUnit.OrderClientTest.createOrderWithIngredients.executor": "Run",
+    "JUnit.OrderClientTest.createOrderWithoutAuthorization.executor": "Run",
+    "JUnit.OrderClientTest.executor": "Run",
+    "JUnit.UserCreate.createUserTest.executor": "Run",
+    "JUnit.UserCreate.createUserTwiceTest.executor": "Run",
+    "JUnit.UserCreate.createUserWithNoName.executor": "Run",
+    "JUnit.UserLogin.loginUserTest.executor": "Run",
+    "JUnit.UserLogin.loginUserWithWrongNameTest.executor": "Run",
+    "JUnit.UserLogin.loginUserWithWrongPasswordTest.executor": "Run",
+    "Maven.QA-java-diplom2 [allure:report].executor": "Run",
+    "Maven.QA-java-diplom2 [allure:serve].executor": "Run",
+    "Maven.QA-java-diplom2 [clean,test,-X].executor": "Run",
+    "Maven.QA-java-diplom2 [clean,test].executor": "Run",
+    "Maven.QA-java-diplom2 [site].executor": "Run",
+    "Maven.Sprint_7 [clean,test].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "C:/Users/iwill/Diplom/QA-java-diplom2/src/main/java/org/praktikum/Main.java"
+  }
+}]]></component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean test -X" />
+      <command value="mvn site" />
+      <command value="mvn allure:serve" />
+      <command value="mvn clean test" />
+      <command value="mvn allure:report" />
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.ChangeUserData.changeUserDataWithoutAuthorizationTest">
+    <configuration name="ChangeUserData.changeUserDataWithoutAuthorization" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="QA-java-diplom2" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ChangeUserData" />
+      <option name="METHOD_NAME" value="changeUserDataWithoutAuthorization" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChangeUserData.changeUserDataWithoutAuthorizationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="QA-java-diplom2" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ChangeUserData" />
+      <option name="METHOD_NAME" value="changeUserDataWithoutAuthorizationTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderClientTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="QA-java-diplom2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="api.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="api.client" />
+      <option name="MAIN_CLASS_NAME" value="api.client.OrderClientTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderClientTest.createOrderWithIngredients" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="QA-java-diplom2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="api.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="api.client" />
+      <option name="MAIN_CLASS_NAME" value="api.client.OrderClientTest" />
+      <option name="METHOD_NAME" value="createOrderWithIngredients" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderClientTest.createOrderWithoutAuthorization" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="QA-java-diplom2" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="OrderClientTest" />
+      <option name="METHOD_NAME" value="createOrderWithoutAuthorization" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ChangeUserData.changeUserDataWithoutAuthorizationTest" />
+        <item itemvalue="JUnit.OrderClientTest.createOrderWithoutAuthorization" />
+        <item itemvalue="JUnit.OrderClientTest.createOrderWithIngredients" />
+        <item itemvalue="JUnit.OrderClientTest" />
+        <item itemvalue="JUnit.ChangeUserData.changeUserDataWithoutAuthorization" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-11.0.22-corretto-11.0.22-4caba194b151-868cef46" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="32c95c06-0783-418e-ad3e-369080b86ddc" name="Changes" comment="" />
+      <created>1721124797471</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1721124797471</updated>
+    </task>
+    <servers />
+  </component>
+</project>
