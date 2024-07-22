@@ -1,4 +1,7 @@
-import api.client.UserClient;
+
+import api.client.UserClientLogin;
+import api.client.UserClientRegister;
+import api.client.UserClientUser;
 import io.qameta.allure.Description;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -12,23 +15,27 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class ChangeUserDataTest {
 
-    private UserClient userClient;
+    private UserClientUser userClientUser;
+    private UserClientRegister userClientRegister;
+    private UserClientLogin userClientLogin;
 
     @Before
     public void setUp() {
         RestAssured.baseURI = Finals.BASE_URI;
-        userClient = new UserClient();
+        userClientLogin = new UserClientLogin();
+        userClientRegister = new UserClientRegister();
+        userClientUser = new UserClientUser();
     }
 
     @Test
     @Description("Обновление данных юзера")
     public void changeUserData() {
         User user = DataCreator.generateRandomUser();
-        userClient.createUser(user)
+        userClientRegister.createUser(user)
                 .then()
                 .body("success", equalTo(true));
 
-        Response loginResponse = userClient.loginUser(user)
+        Response loginResponse = userClientLogin.loginUser(user)
                 .then()
                 .statusCode(200)
                 .and()
@@ -45,7 +52,7 @@ public class ChangeUserDataTest {
         String newEmail = User.generateRandomEmail();
         String newName = User.generateRandomName();
 
-        userClient.updateUserInfo(accessToken, newEmail, newName)
+        userClientUser.updateUserInfo(accessToken, newEmail, newName)
                 .then()
                 .statusCode(200)
                 .and()
@@ -60,11 +67,11 @@ public class ChangeUserDataTest {
     @Description("Проверка смены данных без авторизации")
     public void changeUserDataWithoutAuthorizationTest() {
         User user = DataCreator.generateRandomUser();
-        userClient.createUser(user)
+        userClientRegister.createUser(user)
                 .then()
                 .body("success", equalTo(true));
 
-        userClient.loginUser(user)
+        userClientLogin.loginUser(user)
                 .then()
                 .statusCode(200)
                 .and()
@@ -77,7 +84,7 @@ public class ChangeUserDataTest {
         String newEmail = User.generateRandomEmail();
         String newName = User.generateRandomName();
 
-        userClient.updateUserInfoWithoutAuthorization(newEmail, newName)
+        userClientUser.updateUserInfoWithoutAuthorization(newEmail, newName)
                 .then()
                 .statusCode(401)
                 .and()

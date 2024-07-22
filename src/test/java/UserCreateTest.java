@@ -1,4 +1,4 @@
-import api.client.UserClient;
+import api.client.UserClientRegister;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
@@ -12,12 +12,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class UserCreateTest {
 
-    private UserClient userClient;
+    private UserClientRegister userClientRegister;
 
     @Before
     public void setUp() {
         RestAssured.baseURI = Finals.BASE_URI;
-        userClient = new UserClient();
+        userClientRegister = new UserClientRegister();
     }
 
     @Test
@@ -25,7 +25,7 @@ public class UserCreateTest {
     @Description("Создание пользователя со случайными значениями")
     public void createUserTest() {
         User user = DataCreator.generateRandomUser();
-        userClient.createUser(user)
+        userClientRegister.createUser(user)
                 .then()
                 .body("success", equalTo(true));
     }
@@ -35,11 +35,11 @@ public class UserCreateTest {
     @Description("Создание двух одинаковых пользователей")
     public void createUserTwiceTest() {
         User user = DataCreator.generateRandomUser();
-        userClient.createUser(user)
+        userClientRegister.createUser(user)
                 .then()
                 .body("success", equalTo(true));
 
-        userClient.createUser(user)
+        userClientRegister.createUser(user)
                 .then()
                 .statusCode(403)
                 .and()
@@ -55,7 +55,7 @@ public class UserCreateTest {
         User user = DataCreator.generateRandomUser();
         user.setName(null);
 
-        userClient.createUser(user)
+        userClientRegister.createUser(user)
                 .then()
                 .statusCode(403)
                 .and()

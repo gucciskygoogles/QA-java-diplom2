@@ -1,5 +1,5 @@
-import api.client.OrderClient;
-import api.client.UserClient;
+import api.client.*;
+
 import io.qameta.allure.Description;
 import io.restassured.RestAssured;
 import parktikum.DataCreator;
@@ -15,27 +15,32 @@ import static parktikum.DataCreator.getValidIngredientIds;
 
 public class OrderCreateAndGetTest {
 
-    private OrderClient orderClient;
+    private OrderClientOrders orderClientOrders;
+    private OrderClientIngredients orderClientIngredients;
+    private UserClientRegister userClientRegister;
+    private UserClientLogin userClientLogin;
     private String token;
 
     @Before
     public void setUp() {
         RestAssured.baseURI = Finals.BASE_URI;
-        orderClient = new OrderClient();
-        UserClient userClient = new UserClient();
+        orderClientOrders = new OrderClientOrders();
+        orderClientIngredients = new OrderClientIngredients();
+        userClientLogin = new UserClientLogin();
+        userClientRegister = new UserClientRegister();
 
         User user = DataCreator.generateRandomUser();
-        userClient.createUser(user);
+        userClientRegister.createUser(user);
 
-        Response loginResponse = userClient.loginUser(user);
+        Response loginResponse = userClientLogin.loginUser(user);
         token = loginResponse.path("accessToken");
     }
 
     @Test
     @Description("Тест Создание заказа с авторизациий")
     public void createOrderWithAuthorizationTest() {
-        Order order = new Order(getValidIngredientIds(orderClient));
-        Response response = orderClient.createOrderWithAuthorization(order, token);
+        Order order = new Order(getValidIngredientIds(orderClientIngredients));
+        Response response = orderClientOrders.createOrderWithAuthorization(order, token);
 
         response.then().statusCode(200)
                 .and()
@@ -46,8 +51,8 @@ public class OrderCreateAndGetTest {
     @Test
     @Description("Тест Создание заказа без авторизации")
     public void createOrderWithoutAuthorizationTest() {
-        Order order = new Order(getValidIngredientIds(orderClient));
-        Response response = orderClient.createOrderWithoutAuthorization(order);
+        Order order = new Order(getValidIngredientIds(orderClientIngredients));
+        Response response = orderClientOrders.createOrderWithoutAuthorization(order);
 
         response.then().statusCode(200)
                 .and()
@@ -58,8 +63,8 @@ public class OrderCreateAndGetTest {
     @Test
     @Description("Тест Создание заказа с ингредиентами")
     public void createOrderWithIngredientsTest() {
-        Order order = new Order(getValidIngredientIds(orderClient));
-        Response response = orderClient.createOrder(order);
+        Order order = new Order(getValidIngredientIds(orderClientIngredients));
+        Response response = orderClientOrders.createOrder(order);
 
         response.then().statusCode(200)
                 .and()
@@ -70,7 +75,7 @@ public class OrderCreateAndGetTest {
     @Test
     @Description("Тест Создание заказа с игредиентами")
     public void createOrderWithoutIngredientsTest() {
-        Response response = orderClient.createOrderWithoutIngredients();
+        Response response = orderClientOrders.createOrderWithoutIngredients();
 
         response.then().statusCode(400)
                 .and()
@@ -81,7 +86,7 @@ public class OrderCreateAndGetTest {
     @Test
     @Description("Тест Создание заказа с некорректными ингредиентами")
     public void createOrderWithInvalidIngredientTest() {
-        Response response = orderClient.createOrderWithInvalidIngredient();
+        Response response = orderClientOrders.createOrderWithInvalidIngredient();
 
         response.then().statusCode(500);
     }
@@ -89,7 +94,7 @@ public class OrderCreateAndGetTest {
     @Test
     @Description("Тест Получение заказов юзера")
     public void getUserOrdersWithAuthorizationTest() {
-        Response response = orderClient.getUserOrders(token);
+        Response response = orderClientOrders.getUserOrders(token);
 
         response.then().statusCode(200)
                 .and()
@@ -100,7 +105,7 @@ public class OrderCreateAndGetTest {
     @Test
     @Description("Тест Получение заказов юзера без регистрации")
     public void getUserOrdersWithoutAuthorizationTest() {
-        Response response = orderClient.getUserOrdersWithoutAuthorization();
+        Response response = orderClientOrders.getUserOrdersWithoutAuthorization();
 
         response.then().statusCode(401)
                 .and()
