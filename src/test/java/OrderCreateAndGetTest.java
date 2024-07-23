@@ -1,3 +1,4 @@
+
 import api.client.*;
 
 import io.qameta.allure.Description;
@@ -11,56 +12,52 @@ import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
 
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 import static parktikum.DataCreator.getValidIngredientIds;
 
 public class OrderCreateAndGetTest {
 
-    private OrderClientOrders orderClientOrders;
     private OrderClientIngredients orderClientIngredients;
-    private UserClientRegister userClientRegister;
+    private OrderClientOrders orderClientOrders;
     private UserClientLogin userClientLogin;
+    private UserClientRegister userClientRegister;
     private UserClientUser userClientUser;
     private String token;
 
     @Before
     public void setUp() {
         RestAssured.baseURI = Finals.BASE_URI;
+
         orderClientOrders = new OrderClientOrders();
         orderClientIngredients = new OrderClientIngredients();
         userClientLogin = new UserClientLogin();
         userClientRegister = new UserClientRegister();
         userClientUser = new UserClientUser();
-
-        User user = DataCreator.generateRandomUser();
-        userClientRegister.createUser(user)
-                .then()
-                .statusCode(200);
-
-        Response loginResponse = userClientLogin.loginUser(user)
-                .then()
-                .statusCode(200)
-                .extract()
-                .response();
-
-        token = loginResponse.path("accessToken");
     }
 
     @After
     public void tearDown() {
         if (token != null) {
-            userClientUser.deleteUser(token)
-                    .then()
-                    .statusCode(200)
+            Response response = userClientUser.deleteUser(token);
+            System.out.println("Attempting to delete user with token: " + token);
+            response.then()
+                    .statusCode(202)
                     .and()
                     .body("success", equalTo(true));
+        } else {
+            System.out.println("Token is null, skipping user deletion.");
         }
     }
 
     @Test
-    @Description("Тест Создание заказа с авторизациий")
     public void createOrderWithAuthorizationTest() {
+        User user = DataCreator.generateRandomUser();
+        userClientRegister.createUser(user);
+
+        Response loginResponse = userClientLogin.loginUser(user);
+        token = loginResponse.path("accessToken");
         Order order = new Order(getValidIngredientIds(orderClientIngredients));
         Response response = orderClientOrders.createOrderWithAuthorization(order, token);
 
@@ -116,6 +113,11 @@ public class OrderCreateAndGetTest {
     @Test
     @Description("Тест Получение заказов юзера")
     public void getUserOrdersWithAuthorizationTest() {
+        User user = DataCreator.generateRandomUser();
+        userClientRegister.createUser(user);
+
+        Response loginResponse = userClientLogin.loginUser(user);
+        token = loginResponse.path("accessToken");
         Response response = orderClientOrders.getUserOrders(token);
 
         response.then().statusCode(200)

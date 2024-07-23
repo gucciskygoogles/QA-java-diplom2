@@ -51,8 +51,9 @@ public class UserClientUser {
     public Response deleteUser(String accessToken) {
         return RestAssured
                 .given()
+                .header("Content-Type", "json")
                 .header("Authorization", accessToken)
                 .when()
-                .delete("/api/auth/user");
+                .delete("/auth/user");
     }
 }

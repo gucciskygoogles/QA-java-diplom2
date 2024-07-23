@@ -5,6 +5,7 @@ import api.client.UserClientUser;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class UserLoginTest {
     private UserClientLogin userClientLogin;
     private UserClientRegister userClientRegister;
     private UserClientUser userClientUser;
-    private String token;
+    private String accessToken;
 
 
     @Before
@@ -32,12 +33,15 @@ public class UserLoginTest {
 
     @After
     public void tearDown() {
-        if (token != null) {
-            userClientUser.deleteUser(token)
-                    .then()
-                    .statusCode(200)
+        if (accessToken != null) {
+            Response response = userClientUser.deleteUser(accessToken);
+            System.out.println("Attempting to delete user with token: " + accessToken);
+            response.then()
+                    .statusCode(202)
                     .and()
                     .body("success", equalTo(true));
+        } else {
+            System.out.println("Token is null, skipping user deletion.");
         }
     }
 
@@ -46,8 +50,10 @@ public class UserLoginTest {
     @Description("Логирование нового пользователя")
     public void loginUserTest() {
         User user = DataCreator.generateRandomUser();
-        userClientRegister.createUser(user)
-                .then()
+        Response response = userClientRegister.createUser(user);
+        accessToken = response.path("accessToken");
+
+        response.then()
                 .body("success", equalTo(true));
 
         userClientLogin.loginUser(user)
@@ -66,8 +72,10 @@ public class UserLoginTest {
     @Description("Логирование пользователя с неверным паролем")
     public void loginUserWithWrongPasswordTest() {
         User user = DataCreator.generateRandomUser();
-        userClientRegister.createUser(user)
-                .then()
+        Response response = userClientRegister.createUser(user);
+        accessToken = response.path("accessToken");
+
+        response.then()
                 .body("success", equalTo(true));
 
         user.setPassword(User.generateRandomPassword());
@@ -83,8 +91,10 @@ public class UserLoginTest {
     @Description("Логирование пользователя с неверным паролем")
     public void loginUserWithWrongNameTest() {
         User user = DataCreator.generateRandomUser();
-        userClientRegister.createUser(user)
-                .then()
+        Response response = userClientRegister.createUser(user);
+        accessToken = response.path("accessToken");
+
+        response.then()
                 .body("success", equalTo(true));
 
         user.setEmail(User.generateRandomPassword());

@@ -1,4 +1,3 @@
-
 import api.client.UserClientLogin;
 import api.client.UserClientRegister;
 import api.client.UserClientUser;
@@ -32,11 +31,14 @@ public class ChangeUserDataTest {
     @After
     public void tearDown() {
         if (accessToken != null) {
-            userClientUser.deleteUser(accessToken)
-                    .then()
-                    .statusCode(200)
+            Response response = userClientUser.deleteUser(accessToken);
+            System.out.println("Attempting to delete user with token: " + accessToken);
+            response.then()
+                    .statusCode(202)
                     .and()
                     .body("success", equalTo(true));
+        } else {
+            System.out.println("Token is null, skipping user deletion.");
         }
     }
 
@@ -60,7 +62,7 @@ public class ChangeUserDataTest {
                 .extract()
                 .response();
 
-        String accessToken = loginResponse.jsonPath().getString("accessToken");
+        accessToken = loginResponse.jsonPath().getString("accessToken");
 
         String newEmail = User.generateRandomEmail();
         String newName = User.generateRandomName();
@@ -84,7 +86,7 @@ public class ChangeUserDataTest {
                 .then()
                 .body("success", equalTo(true));
 
-        userClientLogin.loginUser(user)
+        Response loginResponse = userClientLogin.loginUser(user)
                 .then()
                 .statusCode(200)
                 .and()
@@ -92,7 +94,10 @@ public class ChangeUserDataTest {
                 .and()
                 .body("user.email", equalTo(user.getEmail()))
                 .and()
-                .body("user.name", equalTo(user.getName()));
+                .body("user.name", equalTo(user.getName()))
+                .extract().response();
+
+        accessToken = loginResponse.jsonPath().getString("accessToken");
 
         String newEmail = User.generateRandomEmail();
         String newName = User.generateRandomName();

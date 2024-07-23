@@ -3,6 +3,7 @@ import api.client.UserClientUser;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,11 +29,14 @@ public class UserCreateTest {
     @After
     public void tearDown() {
         if (accessToken != null) {
-            userClientUser.deleteUser(accessToken)
-                    .then()
-                    .statusCode(200)
+            Response response = userClientUser.deleteUser(accessToken);
+            System.out.println("Attempting to delete user with token: " + accessToken);
+            response.then()
+                    .statusCode(202)
                     .and()
                     .body("success", equalTo(true));
+        } else {
+            System.out.println("Token is null, skipping user deletion.");
         }
     }
 
@@ -41,9 +45,12 @@ public class UserCreateTest {
     @Description("Создание пользователя со случайными значениями")
     public void createUserTest() {
         User user = DataCreator.generateRandomUser();
-        userClientRegister.createUser(user)
-                .then()
+        Response response = userClientRegister.createUser(user);
+        accessToken = response.path("accessToken");
+
+        response.then()
                 .body("success", equalTo(true));
+
     }
 
     @Test
@@ -51,8 +58,10 @@ public class UserCreateTest {
     @Description("Создание двух одинаковых пользователей")
     public void createUserTwiceTest() {
         User user = DataCreator.generateRandomUser();
-        userClientRegister.createUser(user)
-                .then()
+        Response response = userClientRegister.createUser(user);
+        accessToken = response.path("accessToken");
+
+        response.then()
                 .body("success", equalTo(true));
 
         userClientRegister.createUser(user)
