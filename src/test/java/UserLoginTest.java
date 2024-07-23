@@ -1,9 +1,11 @@
 
 import api.client.UserClientLogin;
 import api.client.UserClientRegister;
+import api.client.UserClientUser;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import parktikum.DataCreator;
@@ -16,6 +18,8 @@ public class UserLoginTest {
 
     private UserClientLogin userClientLogin;
     private UserClientRegister userClientRegister;
+    private UserClientUser userClientUser;
+    private String token;
 
 
     @Before
@@ -23,6 +27,18 @@ public class UserLoginTest {
         RestAssured.baseURI = Finals.BASE_URI;
         userClientLogin = new UserClientLogin();
         userClientRegister = new UserClientRegister();
+        userClientUser = new UserClientUser();
+    }
+
+    @After
+    public void tearDown() {
+        if (token != null) {
+            userClientUser.deleteUser(token)
+                    .then()
+                    .statusCode(200)
+                    .and()
+                    .body("success", equalTo(true));
+        }
     }
 
     @Test

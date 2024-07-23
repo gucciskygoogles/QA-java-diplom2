@@ -63,7 +63,7 @@ public class OrderClientOrders {
                 .get("/orders");
     }
 
-    @Step("Получени заказов без регистрации")
+    @Step("Получениe заказов без регистрации")
     public Response getUserOrdersWithoutAuthorization() {
         return given()
                 .when()

@@ -1,7 +1,9 @@
 import api.client.UserClientRegister;
+import api.client.UserClientUser;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import parktikum.DataCreator;
@@ -13,11 +15,25 @@ import static org.hamcrest.CoreMatchers.equalTo;
 public class UserCreateTest {
 
     private UserClientRegister userClientRegister;
+    private UserClientUser userClientUser;
+    private String accessToken;
 
     @Before
     public void setUp() {
         RestAssured.baseURI = Finals.BASE_URI;
         userClientRegister = new UserClientRegister();
+        userClientUser = new UserClientUser();
+    }
+
+    @After
+    public void tearDown() {
+        if (accessToken != null) {
+            userClientUser.deleteUser(accessToken)
+                    .then()
+                    .statusCode(200)
+                    .and()
+                    .body("success", equalTo(true));
+        }
     }
 
     @Test

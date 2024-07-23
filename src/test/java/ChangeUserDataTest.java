@@ -5,6 +5,7 @@ import api.client.UserClientUser;
 import io.qameta.allure.Description;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import parktikum.DataCreator;
@@ -18,6 +19,7 @@ public class ChangeUserDataTest {
     private UserClientUser userClientUser;
     private UserClientRegister userClientRegister;
     private UserClientLogin userClientLogin;
+    private String accessToken;
 
     @Before
     public void setUp() {
@@ -25,6 +27,17 @@ public class ChangeUserDataTest {
         userClientLogin = new UserClientLogin();
         userClientRegister = new UserClientRegister();
         userClientUser = new UserClientUser();
+    }
+
+    @After
+    public void tearDown() {
+        if (accessToken != null) {
+            userClientUser.deleteUser(accessToken)
+                    .then()
+                    .statusCode(200)
+                    .and()
+                    .body("success", equalTo(true));
+        }
     }
 
     @Test

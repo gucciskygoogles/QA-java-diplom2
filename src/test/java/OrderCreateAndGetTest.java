@@ -2,6 +2,7 @@ import api.client.*;
 
 import io.qameta.allure.Description;
 import io.restassured.RestAssured;
+import org.junit.After;
 import parktikum.DataCreator;
 import parktikum.Finals;
 import parktikum.Order;
@@ -10,6 +11,7 @@ import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 import static parktikum.DataCreator.getValidIngredientIds;
 
@@ -19,6 +21,7 @@ public class OrderCreateAndGetTest {
     private OrderClientIngredients orderClientIngredients;
     private UserClientRegister userClientRegister;
     private UserClientLogin userClientLogin;
+    private UserClientUser userClientUser;
     private String token;
 
     @Before
@@ -28,12 +31,31 @@ public class OrderCreateAndGetTest {
         orderClientIngredients = new OrderClientIngredients();
         userClientLogin = new UserClientLogin();
         userClientRegister = new UserClientRegister();
+        userClientUser = new UserClientUser();
 
         User user = DataCreator.generateRandomUser();
-        userClientRegister.createUser(user);
+        userClientRegister.createUser(user)
+                .then()
+                .statusCode(200);
 
-        Response loginResponse = userClientLogin.loginUser(user);
+        Response loginResponse = userClientLogin.loginUser(user)
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();
+
         token = loginResponse.path("accessToken");
+    }
+
+    @After
+    public void tearDown() {
+        if (token != null) {
+            userClientUser.deleteUser(token)
+                    .then()
+                    .statusCode(200)
+                    .and()
+                    .body("success", equalTo(true));
+        }
     }
 
     @Test

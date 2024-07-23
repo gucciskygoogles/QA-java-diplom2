@@ -17,4 +17,6 @@ public class UserClientLogin {
                 .when()
                 .post("/auth/login");
     }
+
+
 }

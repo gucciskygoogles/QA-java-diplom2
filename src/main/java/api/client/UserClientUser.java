@@ -1,6 +1,7 @@
 package api.client;
 
 import io.qameta.allure.Step;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
@@ -44,5 +45,14 @@ public class UserClientUser {
                 .then()
                 .extract()
                 .response();
+    }
+
+    @Step("Удаление пользователя")
+    public Response deleteUser(String accessToken) {
+        return RestAssured
+                .given()
+                .header("Authorization", accessToken)
+                .when()
+                .delete("/api/auth/user");
     }
 }
