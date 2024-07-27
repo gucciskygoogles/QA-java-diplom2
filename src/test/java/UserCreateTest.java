@@ -1,7 +1,10 @@
-import api.client.UserClient;
+import api.client.UserClientRegister;
+import api.client.UserClientUser;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import parktikum.DataCreator;
@@ -12,12 +15,29 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class UserCreateTest {
 
-    private UserClient userClient;
+    private UserClientRegister userClientRegister;
+    private UserClientUser userClientUser;
+    private String accessToken;
 
     @Before
     public void setUp() {
         RestAssured.baseURI = Finals.BASE_URI;
-        userClient = new UserClient();
+        userClientRegister = new UserClientRegister();
+        userClientUser = new UserClientUser();
+    }
+
+    @After
+    public void tearDown() {
+        if (accessToken != null) {
+            Response response = userClientUser.deleteUser(accessToken);
+            System.out.println("Attempting to delete user with token: " + accessToken);
+            response.then()
+                    .statusCode(202)
+                    .and()
+                    .body("success", equalTo(true));
+        } else {
+            System.out.println("Token is null, skipping user deletion.");
+        }
     }
 
     @Test
@@ -25,9 +45,12 @@ public class UserCreateTest {
     @Description("Создание пользователя со случайными значениями")
     public void createUserTest() {
         User user = DataCreator.generateRandomUser();
-        userClient.createUser(user)
-                .then()
+        Response response = userClientRegister.createUser(user);
+        accessToken = response.path("accessToken");
+
+        response.then()
                 .body("success", equalTo(true));
+
     }
 
     @Test
@@ -35,11 +58,13 @@ public class UserCreateTest {
     @Description("Создание двух одинаковых пользователей")
     public void createUserTwiceTest() {
         User user = DataCreator.generateRandomUser();
-        userClient.createUser(user)
-                .then()
+        Response response = userClientRegister.createUser(user);
+        accessToken = response.path("accessToken");
+
+        response.then()
                 .body("success", equalTo(true));
 
-        userClient.createUser(user)
+        userClientRegister.createUser(user)
                 .then()
                 .statusCode(403)
                 .and()
@@ -55,7 +80,7 @@ public class UserCreateTest {
         User user = DataCreator.generateRandomUser();
         user.setName(null);
 
-        userClient.createUser(user)
+        userClientRegister.createUser(user)
                 .then()
                 .statusCode(403)
                 .and()

@@ -1,21 +1,13 @@
 package api.client;
 
-import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import parktikum.Order;
 import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
-public class OrderClient {
+public class OrderClientOrders {
 
     private static final String AUTH_HEADER = "Authorization";
-
-    @Step("Получение списка ингредиентов")
-    public Response getIngredients() {
-        return given()
-                .when()
-                .get("ingredients");
-    }
 
     @Step("Создание заказа")
     public Response createOrder(Order order) {
@@ -71,7 +63,7 @@ public class OrderClient {
                 .get("/orders");
     }
 
-    @Step("Получени заказов без регистрации")
+    @Step("Получениe заказов без регистрации")
     public Response getUserOrdersWithoutAuthorization() {
         return given()
                 .when()

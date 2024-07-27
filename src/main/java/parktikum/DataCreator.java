@@ -1,6 +1,6 @@
 package parktikum;
 
-import api.client.OrderClient;
+import api.client.OrderClientIngredients;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
@@ -18,7 +18,7 @@ public class DataCreator {
         return new User(generateRandomEmail(), generateRandomPassword(), generateRandomName());
     }
 
-    public static List<String> getValidIngredientIds(OrderClient orderClient) {
+    public static List<String> getValidIngredientIds(OrderClientIngredients orderClient) {
         Response response = orderClient.getIngredients();
         response.then().statusCode(200).and().body("success", equalTo(true));
 

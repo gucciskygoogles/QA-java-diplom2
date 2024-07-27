@@ -1,7 +1,10 @@
-import api.client.UserClient;
+import api.client.UserClientLogin;
+import api.client.UserClientRegister;
+import api.client.UserClientUser;
 import io.qameta.allure.Description;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import parktikum.DataCreator;
@@ -12,23 +15,42 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class ChangeUserDataTest {
 
-    private UserClient userClient;
+    private UserClientUser userClientUser;
+    private UserClientRegister userClientRegister;
+    private UserClientLogin userClientLogin;
+    private String accessToken;
 
     @Before
     public void setUp() {
         RestAssured.baseURI = Finals.BASE_URI;
-        userClient = new UserClient();
+        userClientLogin = new UserClientLogin();
+        userClientRegister = new UserClientRegister();
+        userClientUser = new UserClientUser();
+    }
+
+    @After
+    public void tearDown() {
+        if (accessToken != null) {
+            Response response = userClientUser.deleteUser(accessToken);
+            System.out.println("Attempting to delete user with token: " + accessToken);
+            response.then()
+                    .statusCode(202)
+                    .and()
+                    .body("success", equalTo(true));
+        } else {
+            System.out.println("Token is null, skipping user deletion.");
+        }
     }
 
     @Test
     @Description("Обновление данных юзера")
     public void changeUserData() {
         User user = DataCreator.generateRandomUser();
-        userClient.createUser(user)
+        userClientRegister.createUser(user)
                 .then()
                 .body("success", equalTo(true));
 
-        Response loginResponse = userClient.loginUser(user)
+        Response loginResponse = userClientLogin.loginUser(user)
                 .then()
                 .statusCode(200)
                 .and()
@@ -40,12 +62,12 @@ public class ChangeUserDataTest {
                 .extract()
                 .response();
 
-        String accessToken = loginResponse.jsonPath().getString("accessToken");
+        accessToken = loginResponse.jsonPath().getString("accessToken");
 
         String newEmail = User.generateRandomEmail();
         String newName = User.generateRandomName();
 
-        userClient.updateUserInfo(accessToken, newEmail, newName)
+        userClientUser.updateUserInfo(accessToken, newEmail, newName)
                 .then()
                 .statusCode(200)
                 .and()
@@ -60,11 +82,11 @@ public class ChangeUserDataTest {
     @Description("Проверка смены данных без авторизации")
     public void changeUserDataWithoutAuthorizationTest() {
         User user = DataCreator.generateRandomUser();
-        userClient.createUser(user)
+        userClientRegister.createUser(user)
                 .then()
                 .body("success", equalTo(true));
 
-        userClient.loginUser(user)
+        Response loginResponse = userClientLogin.loginUser(user)
                 .then()
                 .statusCode(200)
                 .and()
@@ -72,12 +94,15 @@ public class ChangeUserDataTest {
                 .and()
                 .body("user.email", equalTo(user.getEmail()))
                 .and()
-                .body("user.name", equalTo(user.getName()));
+                .body("user.name", equalTo(user.getName()))
+                .extract().response();
+
+        accessToken = loginResponse.jsonPath().getString("accessToken");
 
         String newEmail = User.generateRandomEmail();
         String newName = User.generateRandomName();
 
-        userClient.updateUserInfoWithoutAuthorization(newEmail, newName)
+        userClientUser.updateUserInfoWithoutAuthorization(newEmail, newName)
                 .then()
                 .statusCode(401)
                 .and()
